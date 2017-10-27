@@ -188,7 +188,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 game->OnDeactivated();
             }
         }
-        break;
+		Keyboard::ProcessMessage(message, wParam, lParam);
+		break;
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		Keyboard::ProcessMessage(message, wParam, lParam);
+		break;
 
     case WM_POWERBROADCAST:
         switch (wParam)
@@ -244,6 +250,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             s_fullscreen = !s_fullscreen;
         }
+		Keyboard::ProcessMessage(message, wParam, lParam);
+
         break;
 
     case WM_MENUCHAR:

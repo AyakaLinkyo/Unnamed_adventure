@@ -5,6 +5,11 @@
 #include "pch.h"
 #include "Game.h"
 
+#include "Scene\GamePlay.h"
+
+#include "Singleton\Draw.h"
+#include "Singleton\Key.h"
+
 extern void ExitGame();
 
 using namespace DirectX;
@@ -29,6 +34,12 @@ void Game::Initialize(HWND window, int width, int height)
     CreateDevice();
 
     CreateResources();
+
+	Draw& draw = Draw::GetInstance();
+	draw.InitializeStatic(m_d3dDevice.Get(), m_d3dContext.Get());
+
+	m_gameMain = new GameMain();
+	m_gameMain->Scene(GamePlay::GetInstance());
 
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
@@ -55,7 +66,11 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
-    elapsedTime;
+	m_gameMain->Update();
+
+	Key& key = Key::GetInstance();
+
+	elapsedTime;
 }
 
 // Draws the scene.
@@ -70,6 +85,7 @@ void Game::Render()
     Clear();
 
     // TODO: Add your rendering code here.
+	m_gameMain->Render();
 
     Present();
 }

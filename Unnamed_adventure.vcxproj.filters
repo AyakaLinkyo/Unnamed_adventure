@@ -5,16 +5,103 @@
       <UniqueIdentifier>d6b487ef-7e46-491b-a542-4346f7de54e3</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{2ad44af4-181d-411a-bb19-26028d5987f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{480cde26-d253-497e-9f6e-f98dc3b5ff1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{05f3f000-0f82-427b-8192-fdda038b3334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{4183e4df-982d-4821-8c41-660ae0597aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{edf68834-812a-41b2-8284-dcc8075dbdcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Charactor">
+      <UniqueIdentifier>{4393051b-b27e-4c95-aec4-68ff8f14342a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="Scene\GameMain.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GamePlay.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\FollowCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Collision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\CollisionNode.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\Draw.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\Key.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\Timer.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelEffect.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Obj3d.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Charactor\Player.h">
+      <Filter>Charactor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scene\GameMain.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GamePlay.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\FollowCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\Collision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\CollisionNode.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton\Draw.cpp">
+      <Filter>Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton\Key.cpp">
+      <Filter>Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelEffect.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Obj3d.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Charactor\Player.cpp">
+      <Filter>Charactor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -28,5 +115,28 @@
     <Manifest Include="settings.manifest">
       <Filter>Assets</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Asset\graund200m.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Asset\skydome.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Asset\sphere.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Asset\box.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Asset\boxNode.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Asset\CapsuleNode.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Asset\skydome_5-2.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>
