@@ -105,24 +105,41 @@ void GamePlay::Initialize()
 			m_wall[3].Set_trans(Vector3(-101, 0, 8));
 			m_wall[3].Set_scale(Vector3(1, 6, 200));
 
-			//フロア１
+			//前方フロア
+			
 			//LEFT
 			m_wall[4].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, 100));
 			m_wall[4].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z / 3));
 			m_wall[5].Set_trans(Vector3(m_wall[4].Get_transmat().x, 0, m_wall[4].Get_transmat().z - PASSEGE_SCALE_Z));
 			m_wall[5].Set_scale(Vector3(PASSEGE_SCALE_X, 6, PASSEGE_SCALE_Z));
-
 			//RIGHT
 			m_wall[6].Set_trans(Vector3(m_wall[4].Get_transmat().x + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, 100));
-			m_wall[6].Set_scale(Vector3(FLOOR_SCALE_X / 2, 6, FLOOR_SCALE_Z / 3));
+			m_wall[6].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z / 3));
 			m_wall[7].Set_trans(Vector3(m_wall[6].Get_transmat().x, 0, m_wall[6].Get_transmat().z - PASSEGE_SCALE_Z));
-			m_wall[7].Set_scale(Vector3(FLOOR_SCALE_X / 2, 60, PASSEGE_SCALE_Z));
+			m_wall[7].Set_scale(Vector3(PASSEGE_SCALE_X, 6, PASSEGE_SCALE_Z));
+
+			//中間フロア
+			//LEFT
+			m_wall[8].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, 100 - FLOOR_SCALE_Z - PASSEGE_SCALE_Z));
+			m_wall[8].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z));
+			//RIGHT
+			m_wall[9].Set_trans(Vector3(m_wall[8].Get_transmat().x + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, m_wall[8].Get_transmat().z));
+			m_wall[9].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z));
+
+			//後ろフロア
+			//LEFT
+			m_wall[10].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, 100 - FLOOR_SCALE_Z * 2 - PASSEGE_SCALE_Z * 2 - 10));
+			m_wall[10].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z * 1.5));
+			//RIGHT
+			m_wall[11].Set_trans(Vector3(m_wall[10].Get_transmat().x + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, m_wall[10].Get_transmat().z));
+			m_wall[11].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z*1.5));
 
 			//BACK
-			m_wall[8].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X , 0, 108 - FLOOR_SCALE_Z));
-			m_wall[8].Set_scale(Vector3(FLOOR_SCALE_X, 6, PASSEGE_SCALE_Z));
-			m_wall[9].Set_trans(Vector3(m_wall[8].Get_transmat().x + FLOOR_SCALE_X, 0, m_wall[8].Get_transmat().z));
-			m_wall[9].Set_scale(Vector3(FLOOR_SCALE_X, 6, PASSEGE_SCALE_Z));
+			//前方と中間の間
+			//m_wall[8].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X , 0, 108 - FLOOR_SCALE_Z));
+			//m_wall[8].Set_scale(Vector3(FLOOR_SCALE_X, 6, PASSEGE_SCALE_Z));
+			//m_wall[9].Set_trans(Vector3(m_wall[8].Get_transmat().x + FLOOR_SCALE_X, 0, m_wall[8].Get_transmat().z));
+			//m_wall[9].Set_scale(Vector3(FLOOR_SCALE_X, 6, PASSEGE_SCALE_Z));
 
 		}
 		//壁のノード設定

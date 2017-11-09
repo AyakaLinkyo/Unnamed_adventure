@@ -17,14 +17,14 @@ class GamePlay :
 	public GameBase
 {
 public:
-	const static int WALL_NUM = 10;
+	const static int WALL_NUM = 12;
 
 	//ÉtÉçÉAóp
 	const static int FLOOR_SCALE_X = 47;
 	const static int FLOOR_SCALE_Z = 47;
 	//í òH
 	const static int PASSEGE_SCALE_X = 24;
-	const static int PASSEGE_SCALE_Z = 23;
+	const static int PASSEGE_SCALE_Z = 24;
 
 
 	static GameBase* GetInstance();
