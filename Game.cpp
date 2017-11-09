@@ -38,6 +38,8 @@ void Game::Initialize(HWND window, int width, int height)
 	Draw& draw = Draw::GetInstance();
 	draw.InitializeStatic(m_d3dDevice.Get(), m_d3dContext.Get());
 
+	Key& key = Key::GetInstance();
+
 	m_gameMain = new GameMain();
 	m_gameMain->Scene(GamePlay::GetInstance());
 
@@ -68,7 +70,6 @@ void Game::Update(DX::StepTimer const& timer)
     // TODO: Add your game logic here.
 	m_gameMain->Update();
 
-	Key& key = Key::GetInstance();
 
 	elapsedTime;
 }

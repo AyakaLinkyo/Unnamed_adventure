@@ -345,16 +345,16 @@ bool CheckSphere2Box(const Sphere& _sphere, const Box& _box, Vector3* _inter)
 
 	ComputeTriangle(_box.Pos0, _box.Pos1, _box.Pos2, &boxTriangle[0]);
 	ComputeTriangle(_box.Pos1, _box.Pos2, _box.Pos3, &boxTriangle[1]);
-	ComputeTriangle(_box.Pos1, _box.Pos4, _box.Pos3, &boxTriangle[2]);
-	ComputeTriangle(_box.Pos4, _box.Pos3, _box.Pos6, &boxTriangle[3]);
+	ComputeTriangle(_box.Pos1, _box.Pos5, _box.Pos3, &boxTriangle[2]);
+	ComputeTriangle(_box.Pos5, _box.Pos3, _box.Pos7, &boxTriangle[3]);
 	ComputeTriangle(_box.Pos4, _box.Pos5, _box.Pos6, &boxTriangle[4]);
 	ComputeTriangle(_box.Pos5, _box.Pos6, _box.Pos7, &boxTriangle[5]);
-	ComputeTriangle(_box.Pos5, _box.Pos0, _box.Pos7, &boxTriangle[6]);
-	ComputeTriangle(_box.Pos0, _box.Pos7, _box.Pos2, &boxTriangle[7]);
-	ComputeTriangle(_box.Pos5, _box.Pos4, _box.Pos0, &boxTriangle[8]);
+	ComputeTriangle(_box.Pos2, _box.Pos4, _box.Pos6, &boxTriangle[6]);
+	ComputeTriangle(_box.Pos0, _box.Pos2, _box.Pos4, &boxTriangle[7]);
+	ComputeTriangle(_box.Pos1, _box.Pos4, _box.Pos5, &boxTriangle[8]);
 	ComputeTriangle(_box.Pos4, _box.Pos0, _box.Pos1, &boxTriangle[9]);
 	ComputeTriangle(_box.Pos2, _box.Pos3, _box.Pos7, &boxTriangle[10]);
-	ComputeTriangle(_box.Pos3, _box.Pos7, _box.Pos6, &boxTriangle[11]);
+	ComputeTriangle(_box.Pos2, _box.Pos7, _box.Pos6, &boxTriangle[11]);
 
 	if (
 		CheckSphere2Triangle(_sphere,boxTriangle[0],&p) || 

@@ -11,8 +11,8 @@ class Key
 {
 public:
 	// キーボード関係
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> m_keyTracker;
+	std::unique_ptr<DirectX::Keyboard> keyboard;
+	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> keyTracker;
 
 	static Key& GetInstance();
 	void Update();

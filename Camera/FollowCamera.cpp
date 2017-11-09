@@ -25,17 +25,17 @@ FollowCamera::~FollowCamera()
 
 void FollowCamera::Update()
 {
-	Key& key = Key::GetInstance();
+	//Key& key = Key::GetInstance();
 
-	// キーボードの状態取得
-	Keyboard::State keyboardState = key.m_keyboard->GetState();
-	key.m_keyTracker->Update(keyboardState);
+	//// キーボードの状態取得
+	//Keyboard::State keyboardState = key.keyboard->GetState();
+	//key.keyTracker->Update(keyboardState);
 
-	if (key.m_keyTracker->IsKeyPressed(Keyboard::Keys::C))
-	{
-		// フラグ切り替え
-		m_isChangeFPS = !m_isChangeFPS;
-	}
+	//if (keyboardState.C)
+	//{
+	//	// フラグ切り替え
+	//	m_isChangeFPS = !m_isChangeFPS;
+	//}
 
 	if (m_player)
 	{

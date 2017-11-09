@@ -17,6 +17,16 @@ class GamePlay :
 	public GameBase
 {
 public:
+	const static int WALL_NUM = 10;
+
+	//フロア用
+	const static int FLOOR_SCALE_X = 47;
+	const static int FLOOR_SCALE_Z = 47;
+	//通路
+	const static int PASSEGE_SCALE_X = 24;
+	const static int PASSEGE_SCALE_Z = 23;
+
+
 	static GameBase* GetInstance();
 	GamePlay();
 
@@ -56,7 +66,9 @@ private:
 	//エフェクトファクトリー
 	std::unique_ptr<DirectX::EffectFactory> m_factory;
 
-
+	//壁
+	Obj3d m_wall[WALL_NUM];
+	BoxNode m_wallNode[WALL_NUM];
 
 };
 

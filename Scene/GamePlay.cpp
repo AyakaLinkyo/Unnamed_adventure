@@ -6,9 +6,6 @@
 #include "SimpleMath.h"
 #include "..\\Singleton\Key.h"
 #include "..\\Singleton\Timer.h"
-//#include "Player.h"
-
-
 
 
 using namespace DirectX;
@@ -38,15 +35,16 @@ GamePlay::~GamePlay()
 
 void GamePlay::Initialize()
 {
-
+	//singletonの設定
 	Key& key = Key::GetInstance();
 	Draw& draw = Draw::GetInstance();
+
 	//カメラの生成
 	m_Camera = std::make_unique<FollowCamera>(800, 600);
-	
+
 	//３dオブジェクトの静的メンバを初期化
 	Obj3d::InitializeStatic(draw.m_d3dDevice, draw.m_d3dContext, m_Camera.get());
-	
+
 	//PrimitiveBatchの初期化
 	m_batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(draw.m_d3dContext);
 
@@ -66,6 +64,7 @@ void GamePlay::Initialize()
 	void const* shaderByteCode;
 	size_t byteCodeLength;
 
+
 	m_effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
 	draw.m_d3dDevice->CreateInputLayout(VertexPositionColor::InputElements,
@@ -82,8 +81,64 @@ void GamePlay::Initialize()
 	//天球モデルの読み込み
 	m_obj_skydome.LoadModel(L"Resources\\skydome.cmo");
 
+	{
+		//壁モデルの読み込み
+		for (int i = 0; i < WALL_NUM; i++)
+		{
+			m_wall[i].LoadModel(L"Resources/box.cmo");
+			//m_wall[i].Set_scale(Vector3(1, 6, 1));
+			//m_wallNode[i].Initialize();
+		}
+
+		//壁の設定
+		{
+			//奥の壁
+			m_wall[0].Set_trans(Vector3(0, 0, -87));
+			m_wall[0].Set_scale(Vector3(200, 6, 1));
+			//手前の壁
+			m_wall[1].Set_trans(Vector3(0, 0, 108));
+			m_wall[1].Set_scale(Vector3(200, 6, 1));
+			//右
+			m_wall[2].Set_trans(Vector3(96, 0, 8));
+			m_wall[2].Set_scale(Vector3(1, 6, 200));
+			//左
+			m_wall[3].Set_trans(Vector3(-101, 0, 8));
+			m_wall[3].Set_scale(Vector3(1, 6, 200));
+
+			//フロア１
+			//LEFT
+			m_wall[4].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, 100));
+			m_wall[4].Set_scale(Vector3(PASSEGE_SCALE_X, 6, FLOOR_SCALE_Z / 3));
+			m_wall[5].Set_trans(Vector3(m_wall[4].Get_transmat().x, 0, m_wall[4].Get_transmat().z - PASSEGE_SCALE_Z));
+			m_wall[5].Set_scale(Vector3(PASSEGE_SCALE_X, 6, PASSEGE_SCALE_Z));
+
+			//RIGHT
+			m_wall[6].Set_trans(Vector3(m_wall[4].Get_transmat().x + FLOOR_SCALE_X + PASSEGE_SCALE_X, 0, 100));
+			m_wall[6].Set_scale(Vector3(FLOOR_SCALE_X / 2, 6, FLOOR_SCALE_Z / 3));
+			m_wall[7].Set_trans(Vector3(m_wall[6].Get_transmat().x, 0, m_wall[6].Get_transmat().z - PASSEGE_SCALE_Z));
+			m_wall[7].Set_scale(Vector3(FLOOR_SCALE_X / 2, 60, PASSEGE_SCALE_Z));
+
+			//BACK
+			m_wall[8].Set_trans(Vector3(-101 + FLOOR_SCALE_X + PASSEGE_SCALE_X , 0, 108 - FLOOR_SCALE_Z));
+			m_wall[8].Set_scale(Vector3(FLOOR_SCALE_X, 6, PASSEGE_SCALE_Z));
+			m_wall[9].Set_trans(Vector3(m_wall[8].Get_transmat().x + FLOOR_SCALE_X, 0, m_wall[8].Get_transmat().z));
+			m_wall[9].Set_scale(Vector3(FLOOR_SCALE_X, 6, PASSEGE_SCALE_Z));
+
+		}
+		//壁のノード設定
+		for (int i = 0; i < WALL_NUM; i++)
+		{
+			m_wallNode[i].SetTrans(m_wall[i].Get_transmat() + Vector3(0, 0.5f, 0));
+			m_wallNode[i].SetSize(m_wall[i].Get_scale());
+		}
+
+	}
+
+
+
+
 	//プレイヤーの生成
-	m_player = std::make_unique<Player>(key.m_keyboard.get());
+	m_player = std::make_unique<Player>();
 
 	//プレイヤーをカメラにセットする
 	m_Camera->SetPlayer(m_player.get());
@@ -97,17 +152,12 @@ void GamePlay::Initialize()
 void GamePlay::UpdateGame(GameMain * main)
 {
 	Key& key = Key::GetInstance();
-	auto kb = key.m_keyboard->GetState();
-
 
 	Timer& time = Timer::GetInstance();
 
-	if (endCnt == 0)
-	{
-		key.Update();
-		time.Update();
-		m_player->Update();
-	}
+	key.Update();
+	time.Update();
+	m_player->Update();
 	timeCnt++;
 	if (timeCnt > 120)
 	{
@@ -120,14 +170,34 @@ void GamePlay::UpdateGame(GameMain * main)
 		m_proj = m_Camera->GetProjectionMatrix();
 	}
 
-	//for (std::vector<std::unique_ptr<ENEMY>>::iterator it = m_enemy.begin(); it != m_enemy.end(); it++)
-	//{
-	//	(*it)->Update(m_player.get());
-	//}
-
-
 	m_obj_skydome.Update();
 	m_obj_ground.Update();
+
+
+	Vector3* p;
+	p = new Vector3;
+
+	//壁との判定
+	for (int i = 0; i < WALL_NUM; i++)
+	{
+		Box _box = m_wallNode[i];
+		Sphere _PlayerNode = m_player->GetSphere();
+
+		if (CheckSphere2Box(_PlayerNode, _box, p))
+		{
+			m_player->StopMove();
+			m_player->Colc();
+		}
+		else
+		{
+			//m_player->MoveReset();
+		}
+		m_wall[i].Update();
+
+		m_wallNode[i].Update();
+	}
+
+
 
 
 
@@ -177,10 +247,17 @@ void GamePlay::RenderGame()
 	draw.m_d3dContext->IASetInputLayout(m_inputLayout.Get());
 
 	////天球モデルの描画
-	m_obj_skydome.Draw();
+	//m_obj_skydome.Draw();
 
 	////地面モデルの描画
 	m_obj_ground.Draw();
+
+	//壁の描画
+	for (int i = 0; i < WALL_NUM; i++)
+	{
+		m_wall[i].Draw();
+		m_wallNode[i].Render();
+	}
 
 	//タイムの描画
 	Timer& time = Timer::GetInstance();

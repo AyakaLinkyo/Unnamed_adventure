@@ -17,15 +17,15 @@ Key & Key::GetInstance()
 void Key::Update()
 {
 	// ƒL[“ü—Íî•ñ‚ðŽæ“¾
-	DirectX::Keyboard::State key = m_keyboard->GetState();
-	m_keyTracker->Update(key);
+	DirectX::Keyboard::State key = keyboard->GetState();
+	keyTracker->Update(key);
 
 }
 
 Key::Key()
 {
-	m_keyboard = std::make_unique<DirectX::Keyboard>();
-	m_keyTracker = std::make_unique<DirectX::Keyboard::KeyboardStateTracker>();
+	keyboard = std::make_unique<DirectX::Keyboard>();
+	keyTracker = std::make_unique<DirectX::Keyboard::KeyboardStateTracker>();
 }
 
 
