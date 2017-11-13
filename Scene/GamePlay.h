@@ -17,7 +17,7 @@ class GamePlay :
 	public GameBase
 {
 public:
-	const static int WALL_NUM = 12;
+	const static int WALL_NUM = 23;
 
 	//フロア用
 	const static int FLOOR_SCALE_X = 47;
@@ -35,6 +35,9 @@ public:
 	void UpdateGame(GameMain* main);	//	データの更新
 	void RenderGame();	//	描画する
 	static void Dispose();
+
+	//壁の位置
+	void WallInitialize();
 
 private:
 	static GameBase* m_base;

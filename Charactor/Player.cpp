@@ -156,7 +156,7 @@ void Player::Colc()
 //Åá----------------------------------------------------Åá
 void Player::Up()
 {
-	Vector3 moveV(0, 0, -0.1f);
+	Vector3 moveV(0, 0, -0.3);
 	float angle = m_ObjPlayer[PLAYER_PARTS_BODY].Get_rotate().y;
 
 	Matrix rotmat = Matrix::CreateRotationY(angle);
@@ -174,7 +174,7 @@ void Player::Up()
 //Åá----------------------------------------------------Åá
 void Player::Down()
 {
-	Vector3 moveV(0, 0, 0.1f);
+	Vector3 moveV(0, 0, 0.3);
 	float angle = m_ObjPlayer[PLAYER_PARTS_BODY].Get_rotate().y;
 
 	Matrix rotmat = Matrix::CreateRotationY(angle);
