@@ -163,6 +163,8 @@
     <ClInclude Include="Collision\Collision.h" />
     <ClInclude Include="Collision\CollisionNode.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="Item\Item.h" />
     <ClInclude Include="Model\ModelEffect.h" />
     <ClInclude Include="Model\Obj3d.h" />
     <ClInclude Include="pch.h" />
@@ -172,6 +174,7 @@
     <ClInclude Include="Singleton\Key.h" />
     <ClInclude Include="Singleton\Timer.h" />
     <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="Window\ItemWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
@@ -180,6 +183,8 @@
     <ClCompile Include="Collision\Collision.cpp" />
     <ClCompile Include="Collision\CollisionNode.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ItemFactory.cpp" />
+    <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Model\ModelEffect.cpp" />
     <ClCompile Include="Model\Obj3d.cpp" />
@@ -193,6 +198,7 @@
     <ClCompile Include="Scene\GamePlay.cpp" />
     <ClCompile Include="Singleton\Draw.cpp" />
     <ClCompile Include="Singleton\Key.cpp" />
+    <ClCompile Include="Window\ItemWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

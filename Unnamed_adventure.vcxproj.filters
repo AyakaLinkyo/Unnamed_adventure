@@ -23,6 +23,12 @@
     <Filter Include="Charactor">
       <UniqueIdentifier>{4393051b-b27e-4c95-aec4-68ff8f14342a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{33e836b4-233f-4571-b6a3-2929ba6abf9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{16eaf61b-1082-4fb8-b4e0-82a007ad38c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -64,6 +70,13 @@
     <ClInclude Include="Charactor\Player.h">
       <Filter>Charactor</Filter>
     </ClInclude>
+    <ClInclude Include="Window\ItemWindow.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Item\Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -102,6 +115,13 @@
     <ClCompile Include="Charactor\Player.cpp">
       <Filter>Charactor</Filter>
     </ClCompile>
+    <ClCompile Include="Window\ItemWindow.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Item\Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
