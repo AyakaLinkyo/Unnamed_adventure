@@ -162,6 +162,7 @@
     <ClInclude Include="Charactor\Player.h" />
     <ClInclude Include="Collision\Collision.h" />
     <ClInclude Include="Collision\CollisionNode.h" />
+    <ClInclude Include="Door\Door.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Item\Item.h" />
     <ClInclude Include="Item\ItemFactory.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Charactor\Player.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
     <ClCompile Include="Collision\CollisionNode.cpp" />
+    <ClCompile Include="Door\Door.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Item\Item.cpp" />
     <ClCompile Include="Item\ItemFactory.cpp" />

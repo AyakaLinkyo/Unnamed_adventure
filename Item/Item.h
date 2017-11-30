@@ -8,13 +8,13 @@
 class Item
 {
 public:
-	enum ID { NONE, LIGHTER, BOMB };
+	enum ID { LIGHTER, BOMB, MAX, NONE };
 	enum STATE{ FIELD, HAVE, RELEASE, LOSE };
 
 	Item();
 	~Item();
 	virtual void Initialize(DirectX::SimpleMath::Vector3 pos) = 0;
-	Item::ID Item::Update(Sphere _PlayerNode);
+	bool Item::Update(Sphere _PlayerNode);
 	void Render();
 
 	Item::STATE GetState();

@@ -15,7 +15,7 @@ Item::~Item()
 {
 }
 
-Item::ID Item::Update(Sphere _PlayerNode)
+bool Item::Update(Sphere _PlayerNode)
 {
 
 	//アイテムが表示されていたら
@@ -30,14 +30,14 @@ Item::ID Item::Update(Sphere _PlayerNode)
 		{
 			m_state = HAVE;
 
-			return m_id;
+			return true;
 		}
 
 		m_collisionNode.Update();
 		m_ObjItem.Update();
-		
-		return Item::ID::NONE;
+
 	}
+	return false;
 }
 
 void Item::Render()
@@ -91,6 +91,12 @@ void Bomb::Initialize(DirectX::SimpleMath::Vector3 pos)
 	m_ObjItem.Set_trans(pos);
 	m_ObjItem.Set_scale(Vector3(1, 1, 1));
 
+	//ノードの設定
+	m_collisionNode.Initialize();
+	m_collisionNode.SetTrans(m_ObjItem.Get_transmat() + Vector3(0, 0.5f, 0));
+	m_collisionNode.SetSize(m_ObjItem.Get_scale());
+
+	m_id = Item::ID::BOMB;
 }
 
 void None::Initialize(DirectX::SimpleMath::Vector3 pos)

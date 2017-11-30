@@ -81,11 +81,12 @@ void GamePlay::Initialize()
 	//壁の設定
 	WallInitialize();
 
-	m_open.LoadModel(L"Resources/box.cmo");
-	m_open.Set_trans(Vector3(m_wall[14].Get_transmat().x + PASSEGE_SCALE_X + FLOOR_SCALE_X / 1, 0, 108 - FLOOR_SCALE_Z));
-	m_open.Set_scale(Vector3(FLOOR_SCALE_X / 1.5, 6, 1));
-	m_openNode.SetTrans(m_open.Get_transmat());
-	m_openNode.SetSize(m_open.Get_scale());
+	//扉の設定
+	m_door[Door::NUM::FIRST].Initialize(Door::NUM::FIRST);
+	m_door[Door::NUM::SECOND].Initialize(Door::NUM::SECOND);
+	m_door[Door::NUM::THIRD].Initialize(Door::NUM::THIRD);
+	m_door[Door::NUM::FOUR].Initialize(Door::NUM::FOUR);
+
 
 	m_obj_skydome.DisableLighting();
 	timeCnt = 0;
@@ -99,7 +100,10 @@ void GamePlay::Initialize()
 	m_player->SetItem(Item::ID::NONE);
 
 	//アイテム生成
-	m_StageItem = m_item_factory->Create(Item::ID::LIGHTER, Vector3(0, 0, 90));
+	m_StageItem[Item::ID::LIGHTER] = m_item_factory->Create(Item::ID::LIGHTER, Vector3(1, 0, 88));
+	//m_StageItem[Item::ID::BOMB] = m_item_factory->Create(Item::ID::BOMB, Vector3(-60, 0, -63));
+	m_StageItem[Item::ID::BOMB] = m_item_factory->Create(Item::ID::BOMB, Vector3(3, 0, 87));
+
 
 	//スイッチの生成
 	m_switch[Switch::NUM::FIRST].Initialize(Switch::NUM::FIRST);
@@ -146,7 +150,7 @@ void GamePlay::UpdateGame(GameMain * main)
 		if (CheckSphere2Box(_PlayerNode, _box, p))
 		{
 			m_player->StopMove();
-			m_player->Colc();
+			//m_player->Colc();
 		}
 		else
 		{
@@ -157,24 +161,56 @@ void GamePlay::UpdateGame(GameMain * main)
 		m_wallNode[i].Update();
 	}
 
-	//アイテムの判定
-	if (m_StageItem != nullptr)
+	//１つ目のスイッチで扉解放
+	if (m_switch[Switch::NUM::FIRST].GetState() == Switch::STATE::ON)
 	{
-		Item::ID getItem;
-		getItem = m_StageItem->Update(_PlayerNode);
-		if (getItem != Item::ID::NONE)
+		m_door[Door::NUM::FIRST].SetState(Door::STATE::OPEN);
+	}
+
+	//２つ目のスイッチで扉解放
+	if (m_switch[Switch::NUM::SECOND].GetState() == Switch::STATE::ON)
+	{
+		m_door[Door::NUM::SECOND].SetState(Door::STATE::OPEN);
+	}
+
+	//ドアの判定
+	for (int i = 0; i < Door::NUM::MAX; i++)
+	{
+		if (m_door[i].GetState() == Door::STATE::CLOSE)
 		{
-			if (m_player->GetItemId() != Item::NONE)
+			if (m_door[i].Collision(_PlayerNode))
 			{
-				m_StageItem = m_item_factory->Create(m_player->GetItemId(), m_player->Get_transmat() + Vector3(0, 2, 0));
+				m_player->StopMove();
+				if (m_player->GetItemId() != Item::LIGHTER)
+				{
+					m_door[Door::NUM::THIRD].SetState(Door::STATE::OPEN);
+				}
+
 			}
-			else
+		}
+		m_door[i].Update();
+	}
+
+	//アイテムの判定
+	for (int i = 0; i < Item::ID::MAX; i++)
+	{
+		//アイテムの更新（当たり判定も同時に取得）
+		if (m_StageItem[i]->Update(_PlayerNode))
+		{
+			if (m_player->GetItemId() != Item::ID::NONE)
 			{
-				m_StageItem = m_item_factory->Create(Item::ID::BOMB, m_player->Get_transmat() + Vector3(0, 2, 0));
+				//別の物を所持していたら
+				if (m_StageItem[i]->GetId() != m_player->GetItemId())
+				{
+					m_StageItem[m_player->GetItemId()] = m_item_factory->Create(m_player->GetItemId(), m_player->Get_transmat() + Vector3(3, 0, 0));
+					m_StageItem[m_player->GetItemId()]->SetState(Item::STATE::FIELD);
+				}
 			}
 
-			m_player->SetItem(getItem);
-			getItem = Item::ID::NONE;
+			//アイテムを持たせる
+			m_player->SetItem(m_StageItem[i]->GetId());
+			//アイテムをプレイヤーが所持している状態に変更
+			m_StageItem[i]->SetState(Item::STATE::HAVE);
 
 		}
 	}
@@ -191,7 +227,6 @@ void GamePlay::UpdateGame(GameMain * main)
 	//	m_open.Update();
 	//	m_openNode.Update();
 	//}
-
 
 	//回転行列（合成）
 	//Matrix rotmat = rotmatZ*rotmatX*rotmatY;
@@ -252,9 +287,22 @@ void GamePlay::RenderGame()
 	//	m_openNode.Render();
 	//}
 
-	if (m_StageItem != nullptr)
+	//if (m_switch[Switch::NUM::SECOND].GetState() != Switch::STATE::ON)
+	//{
+	for (int i = 0; i < Door::NUM::MAX; i++)
 	{
-		m_StageItem->Render();
+		m_door[i].Render();
+	}
+	//m_openNode.Render();
+//}
+
+
+	for (int i = 0; i < Item::ID::MAX; i++)
+	{
+		if (m_StageItem[i] != nullptr)
+		{
+			m_StageItem[i]->Render();
+		}
 	}
 
 	for (int i = 0; i < Switch::NUM::MAX; i++)

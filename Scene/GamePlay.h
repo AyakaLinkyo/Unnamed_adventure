@@ -13,6 +13,8 @@
 
 #include "..\Switch\Switch.h"
 
+#include "..\Door\Door.h"
+
 #include <SimpleMath.h>
 #include <d3d11_1.h>
 
@@ -79,12 +81,12 @@ private:
 	Obj3d m_wall[WALL_NUM];
 	BoxNode m_wallNode[WALL_NUM];
 
-	Obj3d m_open;
-	BoxNode m_openNode;
+	Door m_door[Door::NUM::MAX];
+	//BoxNode m_openNode;
 
 
 	//アイテム
-	std::unique_ptr<Item> m_StageItem;
+	std::unique_ptr<Item> m_StageItem[2];
 	ItemFactory* m_item_factory;
 
 	//スイッチ（２つ）
