@@ -18,6 +18,8 @@
 #include "..\\Collision\Collision.h"
 #include "..\\Collision\CollisionNode.h"
 
+#include "..\\Item\Item.h"
+
 class Player 
 {
 public:
@@ -48,7 +50,7 @@ public:
 	Player();
 	~Player();
 
-	void Init();
+	void Init(Item* playerItem);
 	void Update();
 	void Render();
 	void Colc();
@@ -62,6 +64,10 @@ public:
 	
 	void Jumping();
 	void Jump();
+
+	void SetItem(Item::ID itemId);
+	Item::ID GetItemId();
+
 
 	//スケーリング（XYZ)
 	DirectX::SimpleMath::Vector3 Get_scale();
@@ -106,6 +112,9 @@ private:
 
 	// 歩く種類
 	int m_moveType;
+
+	//所持しているアイテム
+	Item::ID m_itemId;
 
 };
 

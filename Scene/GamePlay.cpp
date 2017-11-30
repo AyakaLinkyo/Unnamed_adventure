@@ -50,12 +50,9 @@ void GamePlay::Initialize()
 
 	m_effect = std::make_unique<BasicEffect>(draw.m_d3dDevice);
 
-	m_effect->SetProjection(XMMatrixOrthographicOffCenterRH(0,
-		800, 600, 0, 0, 1));
-	m_view = Matrix::CreateLookAt(Vector3(0.f, 2.f, 2.f),
-		Vector3(1, 0, 0), Vector3::UnitY);
-	m_proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
-		float(800) / float(600), 0.1f, 500.f);
+	m_effect->SetProjection(XMMatrixOrthographicOffCenterRH(0, 800, 600, 0, 0, 1));
+	m_view = Matrix::CreateLookAt(Vector3(0.f, 2.f, 2.f), Vector3(1, 0, 0), Vector3::UnitY);
+	m_proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f, float(800) / float(600), 0.1f, 500.f);
 
 	m_effect->SetView(m_view);
 	m_effect->SetProjection(m_proj);
@@ -81,35 +78,38 @@ void GamePlay::Initialize()
 	//天球モデルの読み込み
 	m_obj_skydome.LoadModel(L"Resources\\skydome.cmo");
 
-	{
-		//壁モデルの読み込み
-		for (int i = 0; i < WALL_NUM; i++)
-		{
-			m_wall[i].LoadModel(L"Resources/box.cmo");
-			//m_wall[i].Set_scale(Vector3(1, 6, 1));
-			//m_wallNode[i].Initialize();
-		}
+	//壁の設定
+	WallInitialize();
 
-		WallInitialize();
-	}
+	m_open.LoadModel(L"Resources/box.cmo");
+	m_open.Set_trans(Vector3(m_wall[14].Get_transmat().x + PASSEGE_SCALE_X + FLOOR_SCALE_X / 1, 0, 108 - FLOOR_SCALE_Z));
+	m_open.Set_scale(Vector3(FLOOR_SCALE_X / 1.5, 6, 1));
+	m_openNode.SetTrans(m_open.Get_transmat());
+	m_openNode.SetSize(m_open.Get_scale());
 
-
-
+	m_obj_skydome.DisableLighting();
+	timeCnt = 0;
+	endCnt = 0;
 
 	//プレイヤーの生成
 	m_player = std::make_unique<Player>();
 
 	//プレイヤーをカメラにセットする
 	m_Camera->SetPlayer(m_player.get());
+	m_player->SetItem(Item::ID::NONE);
 
+	//アイテム生成
+	m_StageItem = m_item_factory->Create(Item::ID::LIGHTER, Vector3(0, 0, 90));
 
-	m_obj_skydome.DisableLighting();
-	timeCnt = 0;
-	endCnt = 0;
+	//スイッチの生成
+	m_switch[Switch::NUM::FIRST].Initialize(Switch::NUM::FIRST);
+	m_switch[Switch::NUM::SECOND].Initialize(Switch::NUM::SECOND);
+
 }
 
 void GamePlay::UpdateGame(GameMain * main)
 {
+
 	Key& key = Key::GetInstance();
 
 	Timer& time = Timer::GetInstance();
@@ -118,6 +118,7 @@ void GamePlay::UpdateGame(GameMain * main)
 	time.Update();
 	m_player->Update();
 	timeCnt++;
+
 	if (timeCnt > 120)
 	{
 		timeCnt = 0;
@@ -135,12 +136,12 @@ void GamePlay::UpdateGame(GameMain * main)
 
 	Vector3* p;
 	p = new Vector3;
+	Sphere _PlayerNode = m_player->GetSphere();
 
 	//壁との判定
 	for (int i = 0; i < WALL_NUM; i++)
 	{
 		Box _box = m_wallNode[i];
-		Sphere _PlayerNode = m_player->GetSphere();
 
 		if (CheckSphere2Box(_PlayerNode, _box, p))
 		{
@@ -156,8 +157,40 @@ void GamePlay::UpdateGame(GameMain * main)
 		m_wallNode[i].Update();
 	}
 
+	//アイテムの判定
+	if (m_StageItem != nullptr)
+	{
+		Item::ID getItem;
+		getItem = m_StageItem->Update(_PlayerNode);
+		if (getItem != Item::ID::NONE)
+		{
+			if (m_player->GetItemId() != Item::NONE)
+			{
+				m_StageItem = m_item_factory->Create(m_player->GetItemId(), m_player->Get_transmat() + Vector3(0, 2, 0));
+			}
+			else
+			{
+				m_StageItem = m_item_factory->Create(Item::ID::BOMB, m_player->Get_transmat() + Vector3(0, 2, 0));
+			}
+
+			m_player->SetItem(getItem);
+			getItem = Item::ID::NONE;
+
+		}
+	}
+
+	//スイッチの判定
+	for (int i = 0; i < Switch::NUM::MAX; i++)
+	{
+		m_switch[i].Update(_PlayerNode);
+	}
 
 
+	//if (m_player->GetItemId() != Item::LIGHTER)
+	//{
+	//	m_open.Update();
+	//	m_openNode.Update();
+	//}
 
 
 	//回転行列（合成）
@@ -172,17 +205,6 @@ void GamePlay::UpdateGame(GameMain * main)
 
 
 	ModelEffectManager::getInstance()->Update();
-
-	//if (time.GetTime() < 0)
-	//{
-	//	endCnt++;
-	//	if (endCnt > 30)
-	//	{
-	//		main->Scene(GameResult::GetInstance());
-	//	}
-	//}
-
-
 
 }
 
@@ -224,10 +246,22 @@ void GamePlay::RenderGame()
 
 	m_player->Render();
 
-	//for (std::vector<std::unique_ptr<ENEMY>>::iterator it = m_enemy.begin(); it != m_enemy.end(); it++)
+	//if (m_player->GetItemId() != Item::LIGHTER)
 	//{
-	//	(*it)->Render();
+	//	m_open.Draw();
+	//	m_openNode.Render();
 	//}
+
+	if (m_StageItem != nullptr)
+	{
+		m_StageItem->Render();
+	}
+
+	for (int i = 0; i < Switch::NUM::MAX; i++)
+	{
+		m_switch[i].Render();
+	}
+
 	ModelEffectManager::getInstance()->Draw();
 
 }
@@ -242,6 +276,12 @@ void GamePlay::Dispose()
 
 void GamePlay::WallInitialize()
 {
+	//壁モデルの読み込み
+	for (int i = 0; i < WALL_NUM; i++)
+	{
+		m_wall[i].LoadModel(L"Resources/box.cmo");
+	}
+
 	//壁の設定
 	{
 		//奥の壁

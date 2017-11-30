@@ -29,6 +29,9 @@
     <Filter Include="Item">
       <UniqueIdentifier>{16eaf61b-1082-4fb8-b4e0-82a007ad38c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Switch">
+      <UniqueIdentifier>{89f400ff-6e7d-410a-99c1-4b314091bdff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -76,7 +79,12 @@
     <ClInclude Include="Item\Item.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="Item\ItemFactory.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Switch\Switch.h">
+      <Filter>Switch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -121,7 +129,12 @@
     <ClCompile Include="Item\Item.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemFactory.cpp" />
+    <ClCompile Include="Item\ItemFactory.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Switch\Switch.cpp">
+      <Filter>Switch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

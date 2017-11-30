@@ -46,7 +46,7 @@ Player::~Player()
 }
 
 
-void Player::Init()
+void Player::Init(Item* playerItem)
 {
 }
 
@@ -276,6 +276,17 @@ void Player::Jump()
 	Vector3 pos = m_ObjPlayer[PLAYER_PARTS_BODY].Get_transmat();
 	m_ObjPlayer[PLAYER_PARTS_BODY].Set_trans(pos + moveV);
 
+}
+
+void Player::SetItem(Item::ID itemId)
+{
+	//m_item = item;
+	m_itemId = itemId;
+}
+
+Item::ID Player::GetItemId()
+{
+	return m_itemId;
 }
 
 

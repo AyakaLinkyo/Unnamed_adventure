@@ -8,6 +8,6 @@ public:
 	ItemFactory();
 	~ItemFactory();
 
-	std::unique_ptr<Item> Create(Item::ID id);
+	std::unique_ptr<Item> Create(Item::ID id, DirectX::SimpleMath::Vector3 pos);
 };
 

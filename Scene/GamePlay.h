@@ -7,6 +7,12 @@
 #include "..\\Model\Obj3d.h"
 #include "..\\Charactor\Player.h"
 #include "..\\Model\ModelEffect.h"
+
+#include "..\Item\Item.h"
+#include "..\Item\ItemFactory.h"
+
+#include "..\Switch\Switch.h"
+
 #include <SimpleMath.h>
 #include <d3d11_1.h>
 
@@ -72,6 +78,17 @@ private:
 	//壁
 	Obj3d m_wall[WALL_NUM];
 	BoxNode m_wallNode[WALL_NUM];
+
+	Obj3d m_open;
+	BoxNode m_openNode;
+
+
+	//アイテム
+	std::unique_ptr<Item> m_StageItem;
+	ItemFactory* m_item_factory;
+
+	//スイッチ（２つ）
+	Switch m_switch[Switch::NUM::MAX];
 
 };
 

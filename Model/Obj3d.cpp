@@ -167,75 +167,46 @@ DirectX::SimpleMath::Matrix Obj3d::Get_world()
 }
 
 void Obj3d::DisableLighting()
-
 {
-
 	if (m_model)
-
 	{
-
 		// モデル内の全メッシュ分回す
-
 		ModelMesh::Collection::const_iterator it_mesh = m_model->meshes.begin();
 
 		for (; it_mesh != m_model->meshes.end(); it_mesh++)
-
 		{
-
 			ModelMesh* modelmesh = it_mesh->get();
 
 			assert(modelmesh);
 
-
-
 			// メッシュ内の全メッシュパーツ分回す
-
 			std::vector<std::unique_ptr<ModelMeshPart>>::iterator it_meshpart = modelmesh->meshParts.begin();
 
 			for (; it_meshpart != modelmesh->meshParts.end(); it_meshpart++)
-
 			{
-
 				ModelMeshPart* meshpart = it_meshpart->get();
 
 				assert(meshpart);
 
-
-
 				// メッシュパーツにセットされたエフェクトをBasicEffectとして取得
-
 				std::shared_ptr<IEffect> ieff = meshpart->effect;
 
 				BasicEffect* eff = dynamic_cast<BasicEffect*>(ieff.get());
 
 				if (eff != nullptr)
-
 				{
-
 					// 自己発光を最大値に
-
 					eff->SetEmissiveColor(Vector3(1, 1, 1));
 
-
-
 					// エフェクトに含む全ての平行光源分について処理する
-
 					for (int i = 0; i < BasicEffect::MaxDirectionalLights; i++)
-
 					{
-
 						// ライトを無効にする
-
 						eff->SetLightEnabled(i, false);
-
 					}
-
 				}
-
 			}
-
 		}
-
 	}
 
 }
