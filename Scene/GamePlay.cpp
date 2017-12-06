@@ -104,10 +104,43 @@ void GamePlay::Initialize()
 	//m_StageItem[Item::ID::BOMB] = m_item_factory->Create(Item::ID::BOMB, Vector3(-60, 0, -63));
 	m_StageItem[Item::ID::BOMB] = m_item_factory->Create(Item::ID::BOMB, Vector3(3, 0, 87));
 
-
 	//スイッチの生成
 	m_switch[Switch::NUM::FIRST].Initialize(Switch::NUM::FIRST);
 	m_switch[Switch::NUM::SECOND].Initialize(Switch::NUM::SECOND);
+
+	//仕掛け床の生成
+	//消える
+	for (int i = 0; i < 3; i++)
+	{
+		m_disappearPassage[i] = std::make_unique<DisappearPassage>();
+		m_disappearPassage[i]->SetId(Passage::ID::DISAPPEAR);
+		m_disappearPassage[i]->Initialize(Vector3(74, 1 + i, 47 - (2 * i)));
+		if (i % 2 == 0)
+		{
+			m_disappearPassage[i]->StateInit(false);
+		}
+		else
+		{
+			m_disappearPassage[i]->StateInit(true);
+		}
+	}
+	//縦に動く
+	for (int i = 0; i < 3; i++)
+	{
+		m_movePassage[i] = std::make_unique<MovingPassage>();
+		m_movePassage[i]->SetId(Passage::ID::Moving);
+		m_movePassage[i]->Initialize(Vector3(80, 1 + i, 47 - (4 * i)));
+		m_movePassage[i]->TimeInit(60 * i + 60);
+		m_movePassage[i]->SpdInit(Vector3(0, 0.05, 0));
+	}
+
+	//動かさない
+	for (int i = 0; i < 3; i++)
+	{
+		m_notMovePassage[i] = std::make_unique<NotMovingPassage>();
+		m_notMovePassage[i]->SetId(Passage::ID::Moving);
+		m_notMovePassage[i]->Initialize(Vector3(85, 1 + i, 47 - (4 * i)));
+	}
 
 }
 
@@ -161,6 +194,96 @@ void GamePlay::UpdateGame(GameMain * main)
 		m_wallNode[i].Update();
 	}
 
+	//床の判定
+	for (int i = 0; i < 3; i++)
+	{
+		if (m_disappearPassage[i]->GetState())
+		{
+			switch (m_disappearPassage[i]->passageCollision(_PlayerNode))
+			{
+			case 0:
+				break;
+			case 1:
+				m_player->SetTrans(Vector3(
+					m_player->Get_transmat().x,
+					m_disappearPassage[i]->GetBoxCollision().Pos7.y + _PlayerNode.Radius,
+					m_player->Get_transmat().z));
+				m_player->SetJump(0);
+				m_player->JumpChange(true);
+				break;
+			case 2:
+				m_player->JumpChange(false);
+				m_player->SetJump(0);
+				break;
+			case 3:
+				m_player->StopMove();
+				m_player->JumpChange(false);
+				m_player->SetJump(0);
+				break;
+			}
+		}
+
+		m_disappearPassage[i]->Update();
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		switch (m_notMovePassage[i]->passageCollision(_PlayerNode))
+		{
+		case 0:
+			break;
+		case 1:
+			m_player->SetTrans(Vector3(
+				m_player->Get_transmat().x,
+				m_notMovePassage[i]->GetBoxCollision().Pos7.y + _PlayerNode.Radius,
+				m_player->Get_transmat().z));
+			m_player->SetJump(0);
+			m_player->JumpChange(true);
+			break;
+		case 2:
+			m_player->JumpChange(false);
+			m_player->SetJump(0);
+			break;
+		case 3:
+			m_player->StopMove();
+			m_player->JumpChange(false);
+			m_player->SetJump(0);
+			break;
+		}
+
+		m_notMovePassage[i]->Update();
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		m_movePassage[i]->Update();
+
+		switch (m_movePassage[i]->passageCollision(_PlayerNode))
+		{
+		case 0:
+			break;
+		case 1:
+			m_player->SetTrans(Vector3(
+				m_player->Get_transmat().x,
+				m_movePassage[i]->GetBoxCollision().Pos7.y + _PlayerNode.Radius,
+				m_player->Get_transmat().z));
+			m_player->SetJump(0);
+			m_player->JumpChange(true);
+			break;
+		case 2:
+			m_player->JumpChange(false);
+			m_player->SetJump(0);
+			break;
+		case 3:
+			m_player->StopMove();
+			m_player->JumpChange(false);
+			m_player->SetJump(0);
+			break;
+		}
+	}
+
+
+
 	//１つ目のスイッチで扉解放
 	if (m_switch[Switch::NUM::FIRST].GetState() == Switch::STATE::ON)
 	{
@@ -181,7 +304,8 @@ void GamePlay::UpdateGame(GameMain * main)
 			if (m_door[i].Collision(_PlayerNode))
 			{
 				m_player->StopMove();
-				if (m_player->GetItemId() != Item::LIGHTER)
+				//ライター所持していたら扉を開ける
+				if (m_player->GetItemId() == Item::LIGHTER)
 				{
 					m_door[Door::NUM::THIRD].SetState(Door::STATE::OPEN);
 				}
@@ -222,11 +346,6 @@ void GamePlay::UpdateGame(GameMain * main)
 	}
 
 
-	//if (m_player->GetItemId() != Item::LIGHTER)
-	//{
-	//	m_open.Update();
-	//	m_openNode.Update();
-	//}
 
 	//回転行列（合成）
 	//Matrix rotmat = rotmatZ*rotmatX*rotmatY;
@@ -273,6 +392,14 @@ void GamePlay::RenderGame()
 	{
 		m_wall[i].Draw();
 		m_wallNode[i].Render();
+	}
+
+	//床の判定
+	for (int i = 0; i < 3; i++)
+	{
+		m_movePassage[i]->Render();
+		m_disappearPassage[i]->Render();
+		m_notMovePassage[i]->Render();
 	}
 
 	//タイムの描画
@@ -396,6 +523,8 @@ void GamePlay::WallInitialize()
 		m_wall[15].Set_scale(Vector3(FLOOR_SCALE_X + PASSEGE_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
 		m_wall[16].Set_trans(Vector3(m_wall[15].Get_transmat().x + PASSEGE_SCALE_X + FLOOR_SCALE_X, 0, m_wall[15].Get_transmat().z));
 		m_wall[16].Set_scale(Vector3(FLOOR_SCALE_X + PASSEGE_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
+		m_wall[23].Set_trans(Vector3(m_wall[16].Get_transmat().x + FLOOR_SCALE_X, 0, m_wall[16].Get_transmat().z));
+		m_wall[23].Set_scale(Vector3(FLOOR_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
 
 		//中間と中間２の間
 		m_wall[17].Set_trans(Vector3(-101 + FLOOR_SCALE_X / 2, 0, 108 - FLOOR_SCALE_Z * 2));
@@ -404,6 +533,9 @@ void GamePlay::WallInitialize()
 		m_wall[18].Set_scale(Vector3(FLOOR_SCALE_X + PASSEGE_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
 		m_wall[19].Set_trans(Vector3(m_wall[18].Get_transmat().x + PASSEGE_SCALE_X + FLOOR_SCALE_X, 0, m_wall[17].Get_transmat().z));
 		m_wall[19].Set_scale(Vector3(FLOOR_SCALE_X + PASSEGE_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
+		m_wall[24].Set_trans(Vector3(m_wall[19].Get_transmat().x + FLOOR_SCALE_X, 0, m_wall[19].Get_transmat().z));
+		m_wall[24].Set_scale(Vector3(FLOOR_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
+
 
 		//中間２と後方の間
 		m_wall[20].Set_trans(Vector3(-101 + FLOOR_SCALE_X / 2, 0, 108 - FLOOR_SCALE_Z * 3));
@@ -412,6 +544,8 @@ void GamePlay::WallInitialize()
 		m_wall[21].Set_scale(Vector3(FLOOR_SCALE_X + PASSEGE_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
 		m_wall[22].Set_trans(Vector3(m_wall[21].Get_transmat().x + PASSEGE_SCALE_X + FLOOR_SCALE_X, 0, m_wall[20].Get_transmat().z));
 		m_wall[22].Set_scale(Vector3(FLOOR_SCALE_X + PASSEGE_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
+		m_wall[25].Set_trans(Vector3(m_wall[22].Get_transmat().x + FLOOR_SCALE_X, 0, m_wall[22].Get_transmat().z));
+		m_wall[25].Set_scale(Vector3(FLOOR_SCALE_X / 2, 6, PASSEGE_SCALE_Z));
 
 	}
 	//壁のノード設定

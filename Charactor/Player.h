@@ -94,6 +94,8 @@ public:
 	void StopMove();
 	DirectX::SimpleMath::Vector2 GetSpdW() { return m_SpdWalk; }
 
+
+
 private:
 	DirectX::SimpleMath::Vector2 m_SpdWalk;
 
@@ -115,6 +117,7 @@ private:
 
 	//Š‚µ‚Ä‚¢‚éƒAƒCƒeƒ€
 	Item::ID m_itemId;
+
 
 };
 

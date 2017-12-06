@@ -34,6 +34,7 @@ Player::Player()
 	m_sphereN.Initialize();
 	m_sphereN.SetLocalRadius(0.5f);
 
+
 }
 
 //Åá----------------------------------------------------Åá
@@ -266,7 +267,6 @@ void Player::Jumping()
 void Player::Jump()
 {
 	m_jumping -= GRAVITY;
-
 	Vector3 moveV(0, m_jumping, 0);
 	float angle = m_ObjPlayer[PLAYER_PARTS_BODY].Get_rotate().y;
 

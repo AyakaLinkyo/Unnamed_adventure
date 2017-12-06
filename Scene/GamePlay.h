@@ -15,6 +15,9 @@
 
 #include "..\Door\Door.h"
 
+#include "..\Passage\Passage.h"
+#include "..\Passage\PassageFactory.h"
+
 #include <SimpleMath.h>
 #include <d3d11_1.h>
 
@@ -25,7 +28,7 @@ class GamePlay :
 	public GameBase
 {
 public:
-	const static int WALL_NUM = 23;
+	const static int WALL_NUM = 26;
 
 	//フロア用
 	const static int FLOOR_SCALE_X = 47;
@@ -91,6 +94,17 @@ private:
 
 	//スイッチ（２つ）
 	Switch m_switch[Switch::NUM::MAX];
+
+
+	//仕掛けの床
+	//std::unique_ptr<Passage> m_notMove[3];
+	std::unique_ptr<DisappearPassage> m_disappearPassage[3];
+	std::unique_ptr<NotMovingPassage> m_notMovePassage[3];
+
+	PassageFactory* m_passage_factory;
+
+	std::unique_ptr<MovingPassage> m_movePassage[3];
+
 
 };
 

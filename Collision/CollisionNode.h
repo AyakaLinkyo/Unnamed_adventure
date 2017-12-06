@@ -90,7 +90,7 @@ public:
 	void Render();
 
 	// Še•Ó‚Ì‘å‚«‚³‚ğİ’è‚·‚é
-	void SetSize(DirectX::SimpleMath::Vector3 size) { m_size = size; m_Obj.Set_scale(size / 2); }
+	void SetSize(DirectX::SimpleMath::Vector3 size) { m_size = size; m_Obj.Set_scale(size); }
 
 	// Še•Ó‚Ì‘å‚«‚³‚Å’¸“_‚ğİ’è‚·‚é
 	void SetPointPos();

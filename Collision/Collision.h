@@ -27,15 +27,15 @@ public:
 class Box {
 public:
 	// 頂点座標
-	DirectX::SimpleMath::Vector3 Pos0;// 左上前
-	DirectX::SimpleMath::Vector3 Pos1;// 右上前
-	DirectX::SimpleMath::Vector3 Pos2;// 左下前
-	DirectX::SimpleMath::Vector3 Pos3;// 右下前
+	DirectX::SimpleMath::Vector3 Pos0;// 左下前
+	DirectX::SimpleMath::Vector3 Pos1;// 右下前
+	DirectX::SimpleMath::Vector3 Pos2;// 左上前
+	DirectX::SimpleMath::Vector3 Pos3;// 右上前
 
-	DirectX::SimpleMath::Vector3 Pos4;// 左上後
-	DirectX::SimpleMath::Vector3 Pos5;// 右上後
-	DirectX::SimpleMath::Vector3 Pos6;// 左下後
-	DirectX::SimpleMath::Vector3 Pos7;// 右下後
+	DirectX::SimpleMath::Vector3 Pos4;// 左下後
+	DirectX::SimpleMath::Vector3 Pos5;// 右下後
+	DirectX::SimpleMath::Vector3 Pos6;// 左上後
+	DirectX::SimpleMath::Vector3 Pos7;// 右上後
 
 };
 

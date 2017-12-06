@@ -35,6 +35,9 @@
     <Filter Include="Door">
       <UniqueIdentifier>{fd8364eb-cc8d-4f04-8ad3-97096c7a21f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passage">
+      <UniqueIdentifier>{dc4158b2-aef5-4d06-87ed-85fed57557db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -91,6 +94,12 @@
     <ClInclude Include="Door\Door.h">
       <Filter>Door</Filter>
     </ClInclude>
+    <ClInclude Include="Passage\Passage.h">
+      <Filter>Passage</Filter>
+    </ClInclude>
+    <ClInclude Include="Passage\PassageFactory.h">
+      <Filter>Passage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -143,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="Door\Door.cpp">
       <Filter>Door</Filter>
+    </ClCompile>
+    <ClCompile Include="Passage\Passage.cpp">
+      <Filter>Passage</Filter>
+    </ClCompile>
+    <ClCompile Include="Passage\PassageFactory.cpp">
+      <Filter>Passage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
